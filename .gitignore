@@ -4,3 +4,5 @@
 /venv
 *.ics
 *.spec
+~*
+__pycache__/
