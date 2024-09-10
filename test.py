@@ -4,6 +4,8 @@ import keyboard
 import os
 import time
 from mainfunc import get_sheet_for_teacher
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 
 options = ["varian 1", "variant 2", "variant 2", "variant 2"]
 # Указываем путь к директории
@@ -46,8 +48,20 @@ def cli():
                     new_np_array = np.asarray(get_sheet_for_teacher("Поливанов"))
                     print(type(new_np_array))
                     print(new_np_array)
-                    df = pd.DataFrame(np.rot90(new_np_array), columns=["понедельник", "вторник", "среда", "четверг", "пятница", "суббота"])
+                    df = pd.DataFrame(np.rot90(new_np_array), columns=["Поливанов", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"])
                     df.index += 1
+                    #df = pd.DataFrame(np.random.random((10, 3)), columns=("col 1", "col 2", "col 3"))
+
+                    # Преобразуем DataFrame в таблицу
+                    fig, ax = plt.subplots(figsize=(12, 4))
+                    ax.axis('tight')
+                    ax.axis('off')
+                    the_table = ax.table(cellText=df.values, colLabels=df.columns, loc='center')
+
+                    # Сохраняем PDF файл
+                    pp = PdfPages("foo.pdf")
+                    pp.savefig(fig, bbox_inches='tight')
+                    pp.close()
                     print(df.to_string())
                     break
                 else:

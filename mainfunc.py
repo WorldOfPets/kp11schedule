@@ -98,6 +98,7 @@ def get_lesson_for_teacher(teacher, day) -> List[LessonKP11]:
 
 def get_sheet_for_teacher(teacher):
     sheet = []
+    sheet.append(lessons[::-1])
     sheet_day = []
     lesss = get_lesson_for_teacher(teacher, 1)
     for d in days:
