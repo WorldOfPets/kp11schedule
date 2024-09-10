@@ -1,0 +1,6 @@
+/build
+/dist
+/env
+/venv
+*.ics
+*.spec
