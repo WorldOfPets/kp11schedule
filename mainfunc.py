@@ -96,6 +96,28 @@ def get_lesson_for_teacher(teacher, day) -> List[LessonKP11]:
             list_less_t.append(less)
     return list_less_t
 
+def get_sheet_for_teacher(teacher):
+    sheet = []
+    sheet_day = []
+    lesss = get_lesson_for_teacher(teacher, 1)
+    for d in days:
+        sheet_day = []
+        for less in lesss:
+            if less.lesson_day == d:
+                sheet_day.append(less.lesson_num)
+        new_sheet_day = []
+        for i in range(1, 11):
+            if i in sheet_day:
+                new_sheet_day.append(i)
+            else:
+                new_sheet_day.append("Свободен")          
+        sheet.append(new_sheet_day[::-1])
+    print(sheet)
+    return sheet
+            
+
+
+
 def get_lesson_for_group(group) -> List[LessonKP11]:
     list_less_g = []
     for less in get_lesson():
