@@ -11,13 +11,19 @@ def main():
     start = str(input("Что ты хочешь сделать?\n1.Получить расписание для преподавателя\n2.Получить расписание для группы"))
     valsearch = "example"
     if start == "1":
-        valsearch = str(input("Teacher name:"))
-        add_event(get_lesson_for_teacher(valsearch, "среда"))
+        #valsearch = str(input("Teacher name:"))
+        tech = get_teachers()
+        print(set(tech))
+        for i in set(tech):
+            add_event(get_lesson_for_teacher(i, "среда"), i, False)
+            
     elif start == "2":
         valsearch = str(input("Group name:"))
         add_event(get_lesson_for_group(valsearch))
-    with open(f'{valsearch}.ics', 'wb') as file:
-        file.write(calendar.to_ical())
+    elif start == "3":
+        print(check_right_format())
+    # with open(f'{valsearch}.ics', 'wb') as file:
+    #     file.write(calendar.to_ical())
 
 if __name__ == "__main__":
     main()

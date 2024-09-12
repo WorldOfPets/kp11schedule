@@ -3,7 +3,7 @@ import numpy as np
 import keyboard
 import os
 import time
-from mainfunc import get_sheet_for_teacher
+from mainfunc import get_sheet_for_teacher, get_teachers
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
@@ -28,6 +28,7 @@ def clr():
 
 def cli():
     clr()
+    teacherss = get_teachers()
     step = 0
     write_step_one(step)
     while True:
