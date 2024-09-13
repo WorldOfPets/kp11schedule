@@ -9,7 +9,7 @@ class Nakladka():
         self.less_two = less_two
 
 def check_teachers(filePath):
-    wb = openpyxl.load_workbook(filePath)
+    wb = openpyxl.load_workbook(filePath, read_only=False, keep_vba=True)
 
     ws = wb.active
     lessons = get_lesson(ws)
@@ -63,7 +63,7 @@ def check_teachers(filePath):
         ws[f"{i.less_two.coordinate}"].fill = PatternFill(patternType='solid', fgColor='FFCC00')
         print(f"Ячейки {i.less_one.coordinate}/{i.less_two.coordinate} Учителя {i.less_one.teacher} / {i.less_two.teacher} Кабинет {i.less_one.cabinet} / {i.less_two.cabinet}")
     
-    wb.save(str(filePath).replace(".xlsm", ".xlsx"))
+    wb.save(str(filePath))
             
         
 
