@@ -101,11 +101,14 @@ def get_teachers(ws):
 
 def get_cabinets(ws):
     cabinets = []
+    cab_errors = []
     for row in ws.iter_rows():
         for cell in row:
             if cell.value is not None and "/" in str(cell.value) or str(cell.value) == "Разговоры о важном":
                 cabinets.append(cell.offset(0, 1).value)
-    return set(cabinets)
+                if len(str(cell.offset(0, 1).value)) < 3 or str(cell.offset(0, 1).value) == None:
+                    cab_errors.append(cell.offset(0, 1).coordinate)
+    return [set(cabinets), cab_errors]
 
 def get_lesson(ws) -> List[LessonKP11]:
     lessons_arr = []
