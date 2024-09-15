@@ -14,8 +14,10 @@ def main():
         #valsearch = str(input("Teacher name:"))
         tech = get_teachers()
         print(set(tech))
-        for i in set(tech):
-            add_event(get_lesson_for_teacher(i, "среда"), i, False)
+        # for i in set(tech):
+        #     add_event(get_lesson_for_teacher(i, "среда"), i, False, True)
+        
+        add_event_group(get_lesson_for_group("ИСиП-35 (11кл)"), "ИСиП35", False)
             
     elif start == "2":
         valsearch = str(input("Group name:"))

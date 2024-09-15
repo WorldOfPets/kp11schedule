@@ -6,7 +6,7 @@ import pytz
 from dateutil.rrule import rrule, WEEKLY
 from datetime import datetime, timedelta
 
-wb = openpyxl.load_workbook("testxl2.xlsx")
+wb = openpyxl.load_workbook("./excel/test2.xlsx")
 
 ws = wb.active
 
@@ -27,11 +27,11 @@ class LessonKP11():
 
     def check_teacher(self, out_teacher):
         matcher = SequenceMatcher(None, out_teacher, self.teacher)
-        return True if matcher.ratio() > 0.83 else False
+        return True if matcher.ratio() > 0.80 else False
     
 def check_teachers(teacher1, teacher2):
         matcher = SequenceMatcher(None, teacher1, teacher2)
-        return True if matcher.ratio() > 0.83 else False
+        return True if matcher.ratio() > 0.80 else False
 def get_group(row_id, col_id):
     for row in ws.iter_rows(min_row=row_id, max_row=row_id):
         for cell in row:
@@ -223,5 +223,51 @@ def add_event(less_arr:List[LessonKP11], teacher, is_even):
             event.add('dtend', dateCurrent + timedelta(minutes=45))
             event.add('class', 'private')
             calendar.add_component(event)
-    with open(f'./she2/{teacher}_нечетная.ics', 'wb') as file:
-        file.write(calendar.to_ical())
+    if is_even:
+        with open(f'./chet/{teacher}_четная.ics', 'wb') as file:
+            file.write(calendar.to_ical())
+    else:
+        with open(f'./nech/{teacher}_нечетная.ics', 'wb') as file:
+            file.write(calendar.to_ical())
+
+def add_event_group(less_arr:List[LessonKP11], group_name, is_even):
+    calendar = icalendar.Calendar()
+    print(len(less_arr))
+    for less in less_arr:
+        this_wkst = days.index(less.lesson_day)
+
+        dstart_e = datetime(2024, 9, 2 , 9, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        dstart_e += timedelta(days=7) if is_even else timedelta(days=0)
+        dstart_n = dstart_e + timedelta(minutes=55)
+        
+        if less.lesson_num % 2 == 1 and less.lesson_num <= 8:
+            dstart_e += timedelta(hours=1*int(less.lesson_num)-1)
+        elif less.lesson_num % 2 == 0 and less.lesson_num <= 8:
+            dstart_n += timedelta(hours=1*int(less.lesson_num)-2)
+        elif less.lesson_num == 9:
+            dstart_e = datetime(2024, 9, 2 , 16, 50, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        elif less.lesson_num == 10:
+            dstart_n = datetime(2024, 9, 2 , 17, 45, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+
+        dstart_e += timedelta(days=this_wkst)
+        dstart_n += timedelta(days=this_wkst)
+        dend = datetime(2024, 12, 31, 7, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        listDate = list(rrule(freq=WEEKLY, 
+                             interval=2, 
+                             until=dend,
+                             dtstart=dstart_e if less.lesson_num % 2 == 1 else dstart_n))
+
+        for dateCurrent in listDate:
+            event = icalendar.Event()
+            event.add('summary', f"{less.cabinet}/{less.teacher}/{less.lesson_name}")
+            event.add('location', f"{less.cabinet}")
+            event.add('dtstart', dateCurrent)
+            event.add('dtend', dateCurrent + timedelta(minutes=45))
+            event.add('class', 'public')
+            calendar.add_component(event)
+    if is_even:
+        with open(f'./chet/{group_name}_четная.ics', 'wb') as file:
+            file.write(calendar.to_ical())
+    else:
+        with open(f'./nech/{group_name}_нечетная.ics', 'wb') as file:
+            file.write(calendar.to_ical())
