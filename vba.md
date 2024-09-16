@@ -22,6 +22,25 @@ Sub ПоискНакладок()
     
 End Sub
 
+' Поиск свободного учителя по строке
+Sub РасписаниеУчителя()
+    SetPath
+    Dim objShell As Object
+    Dim PythonScript As String
+    Dim row As Long, col As Long
+    row = ActiveCell.row
+    col = ActiveCell.Column
+    
+    Set objShell = VBA.CreateObject("Wscript.Shell")
+
+    PythonScript = PyScriptFolder & "mainScheTeacher.py"
+    
+    ThisWorkbook.Save
+    objShell.Run "cmd /K " & PyEXE & " " & PythonScript & " " & ThisWorkbook.FullName & " " & row & " " & col
+    Application.OnTime Now + TimeValue("00:00:05"), "ReOpen"
+    ThisWorkbook.Close (False)
+End Sub
+
 ' Поиск свободного кабиента по строке
 Sub ПоискКабинета()
     SetPath
