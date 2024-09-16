@@ -110,6 +110,16 @@ def get_cabinets(ws):
                     cab_errors.append(cell.offset(0, 1).coordinate)
     return [set(cabinets), cab_errors]
 
+def get_unic_lesson(ws):
+    lessons_arr = []
+    for row in ws.iter_rows():
+        for cell in row:
+            if cell.value is not None and "/" in str(cell.value) or str(cell.value) == "Разговоры о важном":
+                if "(1 п" in cell.value or "(2 п" in cell.value:
+                    str(cell.value).replace("(1 п/гр)", "").replace("(2 п/гр)", "")
+                lessons_arr.append(cell.value.split("/")[0] if "/" in str(cell.value) else cell.value)
+    return set(lessons_arr)
+
 def get_lesson(ws) -> List[LessonKP11]:
     lessons_arr = []
     teachers = get_teachers(ws)
@@ -136,3 +146,4 @@ def get_lesson(ws) -> List[LessonKP11]:
                         lesson.lesson_name += "/гр)"
                     lessons_arr.append(lesson)
     return lessons_arr
+

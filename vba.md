@@ -42,6 +42,23 @@ Sub ПоискКабинета()
     
 End Sub
 
+Sub ПоискОшибок()
+    Dim objShell As Object
+    Dim PythonExe As String, PythonScript As String, filePath As String
+    
+    Set objShell = VBA.CreateObject("Wscript.Shell")
+
+    PythonExe = """C:\Python312\python.exe"""
+    PythonScript = "C:\Users\Admin\Desktop\testPYVBA\checkError.py"
+    filePath = ThisWorkbook.Path & "\" & ThisWorkbook.Name
+    
+    ThisWorkbook.Save
+    objShell.Run "cmd /K " & PythonExe & " " & PythonScript & " " & filePath
+    Application.OnTime Now + TimeValue("00:00:07"), "ReOpen"
+    ThisWorkbook.Close (False)
+    
+End Sub
+
 Private Sub ReOpen()
     Application.Workbooks.Open (ThisWorkbook.FullName)
 End Sub
