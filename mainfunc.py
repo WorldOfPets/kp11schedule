@@ -6,7 +6,7 @@ import pytz
 from dateutil.rrule import rrule, WEEKLY
 from datetime import datetime, timedelta
 
-wb = openpyxl.load_workbook("./excel/test2.xlsx")
+wb = openpyxl.load_workbook("./excel/rasp1811.xlsm")
 
 ws = wb.active
 
@@ -173,47 +173,51 @@ def add_event(less_arr:List[LessonKP11], teacher, is_even):
     for less in less_arr:
         this_wkst = days.index(less.lesson_day)
 
-        dstart_e = datetime(2024, 9, 2 , 9, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        dstart_e += timedelta(days=7) if is_even else timedelta(days=0)
-        dstart_n = dstart_e + timedelta(minutes=55)
+        # dstart_e = datetime(2024, 9, 2 , 9, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        # dstart_e += timedelta(days=7) if is_even else timedelta(days=0)
+        # dstart_n = dstart_e + timedelta(minutes=55)
         
-        if less.lesson_num % 2 == 1 and less.lesson_num <= 8:
-            dstart_e += timedelta(hours=1*int(less.lesson_num)-1)
-        elif less.lesson_num % 2 == 0 and less.lesson_num <= 8:
-            dstart_n += timedelta(hours=1*int(less.lesson_num)-2)
-        elif less.lesson_num == 9:
-            dstart_e = datetime(2024, 9, 2 , 16, 50, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        elif less.lesson_num == 10:
-            dstart_n = datetime(2024, 9, 2 , 17, 45, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        # if less.lesson_num % 2 == 1 and less.lesson_num <= 8:
+        #     dstart_e += timedelta(hours=1*int(less.lesson_num)-1)
+        # elif less.lesson_num % 2 == 0 and less.lesson_num <= 8:
+        #     dstart_n += timedelta(hours=1*int(less.lesson_num)-2)
+        # elif less.lesson_num == 9:
+        #     dstart_e = datetime(2024, 9, 2 , 16, 50, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        # elif less.lesson_num == 10:
+        #     dstart_n = datetime(2024, 9, 2 , 17, 45, 0, tzinfo=pytz.timezone('Europe/Moscow'))
 
 
-        # if less.lesson_num == 1:
-        #     dstart = datetime(2024, 9, 2 , 9, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        # if less.lesson_num == 2:
-        #     dstart = datetime(2024, 9, 2 , 9, 55, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        # if less.lesson_num == 3:
-        #     dstart = datetime(2024, 9, 2 , 11, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        # if less.lesson_num == 4:
-        #     dstart = datetime(2024, 9, 2 , 11, 55, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        # if less.lesson_num == 5:
-        #     dstart = datetime(2024, 9, 2 , 13, 00, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        # if less.lesson_num == 6:
-        #     dstart = datetime(2024, 9, 2 , 13, 55, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        # if less.lesson_num == 7:
-        #     dstart = datetime(2024, 9, 2 , 15, 00, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        # if less.lesson_num == 8:
-        #     dstart = datetime(2024, 9, 2 , 15, 55, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        # if less.lesson_num == 9:
-        #     dstart = datetime(2024, 9, 2 , 16, 50, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        # if less.lesson_num == 10:
-        #     dstart = datetime(2024, 9, 2 , 17, 45, 0, tzinfo=pytz.timezone('Europe/Moscow'))
-        dstart_e += timedelta(days=this_wkst)
-        dstart_n += timedelta(days=this_wkst)
+        if less.lesson_num == 1:
+            dstart = datetime(2024, 9, 2 , 9, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        if less.lesson_num == 2:
+            dstart = datetime(2024, 9, 2 , 9, 55, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        if less.lesson_num == 3:
+            dstart = datetime(2024, 9, 2 , 11, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        if less.lesson_num == 4:
+            dstart = datetime(2024, 9, 2 , 12, 5, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        if less.lesson_num == 5:
+            dstart = datetime(2024, 9, 2 , 13, 10, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        if less.lesson_num == 6:
+            dstart = datetime(2024, 9, 2 , 14, 15, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        if less.lesson_num == 7:
+            dstart = datetime(2024, 9, 2 , 15, 10, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        if less.lesson_num == 8:
+            dstart = datetime(2024, 9, 2 , 16, 5, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        if less.lesson_num == 9:
+            dstart = datetime(2024, 9, 2 , 17, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        if less.lesson_num == 10:
+            dstart = datetime(2024, 9, 2 , 17, 55, 0, tzinfo=pytz.timezone('Europe/Moscow'))
+        dstart += timedelta(days=this_wkst)
+        #dstart_n += timedelta(days=this_wkst)
         dend = datetime(2024, 12, 31, 7, 0, 0, tzinfo=pytz.timezone('Europe/Moscow'))
         listDate = list(rrule(freq=WEEKLY, 
                              interval=2, 
                              until=dend,
-                             dtstart=dstart_e if less.lesson_num % 2 == 1 else dstart_n))
+                             dtstart=dstart))
+        # listDate = list(rrule(freq=WEEKLY, 
+        #                      interval=2, 
+        #                      until=dend,
+        #                      dtstart=dstart_e if less.lesson_num % 2 == 1 else dstart_n))
 
         for dateCurrent in listDate:
             event = icalendar.Event()
@@ -227,7 +231,7 @@ def add_event(less_arr:List[LessonKP11], teacher, is_even):
         with open(f'./chet/{teacher}_четная.ics', 'wb') as file:
             file.write(calendar.to_ical())
     else:
-        with open(f'./nech/{teacher}_нечетная.ics', 'wb') as file:
+        with open(f'./nech/{teacher}_неч.ics', 'wb') as file:
             file.write(calendar.to_ical())
 
 def add_event_group(less_arr:List[LessonKP11], group_name, is_even):
